@@ -15,13 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
 
-    // порядок отображения
     val items = listOf(
         Window.Clients,
         Window.Records,
@@ -29,11 +29,13 @@ fun BottomNavigationBar(navController: NavController) {
         Window.Analytics
     )
 
-    val selected = MaterialTheme.colorScheme.onBackground
-    val unSelected = MaterialTheme.colorScheme.primary.copy(alpha = .5f)
+    val selectedColor = MaterialTheme.colorScheme.primary          // Глубокий розовый/розовое золото
+    val unSelectedColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)  // Приглушенный серый
+    val indicatorColor = MaterialTheme.colorScheme.primaryContainer  // Мягкий розовый контейнер
 
     NavigationBar(
-        containerColor = Color.Transparent
+        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f), // Полупрозрачная поверхность
+        tonalElevation = 8.dp
     ) {
         val backStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = backStackEntry?.destination?.route
@@ -50,14 +52,24 @@ fun BottomNavigationBar(navController: NavController) {
                         }
                     }
                 },
-                icon  = { Icon(getIcon(window), contentDescription = window.title, tint = MaterialTheme.colorScheme.onBackground) },
-                label = { Text(window.title) },
+                icon = {
+                    Icon(
+                        imageVector = getIcon(window),
+                        contentDescription = window.title
+                    )
+                },
+                label = {
+                    Text(
+                        text = window.title,
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = selected,
-                    selectedTextColor = selected,
-                    unselectedIconColor = unSelected,
-                    unselectedTextColor = unSelected,
-                    indicatorColor = selected.copy(alpha = .15f)
+                    selectedIconColor = selectedColor,
+                    selectedTextColor = selectedColor,
+                    unselectedIconColor = unSelectedColor,
+                    unselectedTextColor = unSelectedColor,
+                    indicatorColor = indicatorColor
                 )
             )
         }

@@ -26,12 +26,29 @@ class MainActivity : ComponentActivity() {
         setContent {
             BeautyManagerTheme {
                 val isDark = isSystemInDarkTheme()
+
                 SideEffect {
-                    val color = if (isDark) 0xFF10121C.toInt() else 0xFFE9D7FF.toInt()
-                    window.statusBarColor = color   
-                    window.navigationBarColor = color
-                    WindowInsetsControllerCompat(window, window.decorView)
-                        .isAppearanceLightNavigationBars = !isDark
+                    // Цвета для beauty-темы
+                    val statusBarColor = if (isDark) {
+                        0xFF1F1B2E.toInt()  // Темно-фиолетовый для темной темы
+                    } else {
+                        0xFFFDF2F8.toInt()  // Мягкий розовый для светлой темы
+                    }
+
+                    val navigationBarColor = if (isDark) {
+                        0xFF2A1F3D.toInt()  // Глубокий баклажан для темной темы
+                    } else {
+                        0xFFFFFBFE.toInt()  // Теплый белый для светлой темы
+                    }
+
+                    window.statusBarColor = statusBarColor
+                    window.navigationBarColor = navigationBarColor
+
+                    // Настройка цвета иконок статус-бара и навигации
+                    WindowInsetsControllerCompat(window, window.decorView).apply {
+                        isAppearanceLightStatusBars = !isDark      // Темные иконки в светлой теме
+                        isAppearanceLightNavigationBars = !isDark  // Темные иконки в светлой теме
+                    }
                 }
 
                 MainScreen()

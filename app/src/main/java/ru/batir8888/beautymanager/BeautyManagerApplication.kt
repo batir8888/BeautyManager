@@ -3,6 +3,7 @@ package ru.batir8888.beautymanager
 import android.app.Application
 import androidx.room.Room
 import ru.batir8888.beautymanager.data.AppDatabase
+import ru.batir8888.beautymanager.services.CloudinaryService
 
 class BeautyManagerApplication : Application() {
     companion object {
@@ -14,7 +15,9 @@ class BeautyManagerApplication : Application() {
         super.onCreate()
         database = Room
             .databaseBuilder(applicationContext, AppDatabase::class.java, "beauty_manager_db")
-            .fallbackToDestructiveMigration()   // при отсутствии ручных миграций
+            .fallbackToDestructiveMigration(false)
             .build()
+
+        CloudinaryService.initialize(this)
     }
 }
